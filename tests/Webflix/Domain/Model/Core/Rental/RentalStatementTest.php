@@ -58,13 +58,10 @@ class RentalStatementTest extends PHPUnit_Framework_TestCase
         $this->regular3 = null;
     }
 
-    private function assertAmountAndPointsForReport($expectedAmount, $expectedPoints)
-    {
-        $this->assertEquals($expectedAmount, $this->statement->amountOwed());
-        $this->assertEquals($expectedPoints, $this->statement->frequentRenterPoints());
-    }
-
-    public function testSingleNewReleaseStatement()
+    /**
+     * @test
+     */
+    public function itShouldSetRightAmountAndPointsWhenMakingRentalStatementForSingleNewReleaseStatement()
     {
         $this->statement->addRental(new Rental($this->newRelease1, 3));
         $this->statement->makeRentalStatement();
@@ -72,7 +69,10 @@ class RentalStatementTest extends PHPUnit_Framework_TestCase
         $this->assertAmountAndPointsForReport(9.0, 2);
     }
 
-    public function testDualNewReleaseStatement()
+    /**
+     * @test
+     */
+    public function itShouldSetRightAmountAndPointsWhenMakingRentalStatementForDualNewReleaseStatement()
     {
         $this->statement->addRental(new Rental($this->newRelease1, 3));
         $this->statement->addRental(new Rental($this->newRelease2, 3));
@@ -81,7 +81,10 @@ class RentalStatementTest extends PHPUnit_Framework_TestCase
         $this->assertAmountAndPointsForReport(18.0, 4);
     }
 
-    public function testSingleChildrensStatement()
+    /**
+     * @test
+     */
+    public function itShouldSetRightAmountAndPointsWhenMakingRentalStatementForSingleChildrenStatement()
     {
         $this->statement->addRental(new Rental($this->childrens, 3));
         $this->statement->makeRentalStatement();
@@ -89,7 +92,10 @@ class RentalStatementTest extends PHPUnit_Framework_TestCase
         $this->assertAmountAndPointsForReport(1.5, 1);
     }
 
-    public function testMultipleRegularStatement()
+    /**
+     * @test
+     */
+    public function itShouldSetRightAmountAndPointsWhenMakingRentalStatementForMultipleRegularStatement()
     {
         $this->statement->addRental(new Rental($this->regular1, 1));
         $this->statement->addRental(new Rental($this->regular2, 2));
@@ -99,7 +105,10 @@ class RentalStatementTest extends PHPUnit_Framework_TestCase
         $this->assertAmountAndPointsForReport(7.5, 3);
     }
 
-    public function testRentalStatementFormat()
+    /**
+     * @test
+     */
+    public function itShouldPrintWithRentalStatementFormat()
     {
         $this->statement->addRental(new Rental($this->regular1, 1));
         $this->statement->addRental(new Rental($this->regular2, 2));
@@ -114,5 +123,11 @@ class RentalStatementTest extends PHPUnit_Framework_TestCase
             "You earned 3 frequent renter points\n",
             $this->statement->makeRentalStatement()
         );
+    }
+
+    private function assertAmountAndPointsForReport($expectedAmount, $expectedPoints)
+    {
+        $this->assertEquals($expectedAmount, $this->statement->amountOwed());
+        $this->assertEquals($expectedPoints, $this->statement->frequentRenterPoints());
     }
 }
