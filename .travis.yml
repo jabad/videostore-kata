@@ -9,5 +9,6 @@ script:
   - php vendor/bin/phpunit -c phpunit.xml.dist
 after_success:
   - travis_retry php vendor/bin/coveralls -v
+  - php vendor/bin/phpmetrics --report-cli src
 git:
   depth: 3
