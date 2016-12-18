@@ -1,6 +1,6 @@
 <?php
 
-namespace tests;
+namespace tests\Webflix\Domain\Model\Core\Rental;
 
 use PHPUnit_Framework_TestCase;
 use Webflix\Domain\Model\Core\Movie\ChildrensMovie;
@@ -11,9 +11,9 @@ use Webflix\Domain\Model\Core\Rental\Rental;
 use Webflix\Domain\Model\Core\Rental\RentalStatement;
 
 /**
- * Class VideoStoreTest
+ * Class RentalStatementTest
  */
-class VideoStoreTest extends PHPUnit_Framework_TestCase
+class RentalStatementTest extends PHPUnit_Framework_TestCase
 {
     /** @var  RentalStatement */
     private $statement;
