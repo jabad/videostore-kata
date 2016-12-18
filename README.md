@@ -4,7 +4,9 @@
 [![Coverage Status](https://coveralls.io/repos/github/jabad/videostore-kata/badge.svg)](https://coveralls.io/github/jabad/videostore-kata)
 [![Dependency Status](https://www.versioneye.com/user/projects/585659c4ad9aa20040cc37ff/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/585659c4ad9aa20040cc37ff)
 
-This README would normally document whatever steps are necessary to get your application up and running. 
+This README would normally document whatever steps are necessary to get your application up and running.
+ 
+* [Coding Standard](resources/docs/tech/coding-standard.md)
 
 ### Requirements ###
 
