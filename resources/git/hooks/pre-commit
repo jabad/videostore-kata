@@ -105,7 +105,7 @@ class CodeQualityTool extends Application
                     '--verbose',
                     'fix',
                     $file,
-                    '--level=psr2'
+                    '--rules=@PSR2'
                 ] + ($fixers ? ['--fixers=' . $fixers] : []));
 
             $processBuilder->setWorkingDirectory(__DIR__ . '/../../../');

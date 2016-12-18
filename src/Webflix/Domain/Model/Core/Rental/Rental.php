@@ -1,6 +1,8 @@
 <?php
 
-namespace video;
+namespace Webflix\Domain\Model\Core\Rental;
+
+use Webflix\Domain\Model\Core\Movie\Movie;
 
 /**
  * Class Rental

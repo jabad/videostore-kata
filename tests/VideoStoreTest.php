@@ -3,13 +3,12 @@
 namespace tests;
 
 use PHPUnit_Framework_TestCase;
-use video\ChildrensMovie;
-use video\Movie;
-use video\NewReleaseMovie;
-use video\RegularMovie;
-use video\Rental;
-use video\RentalStatement;
-
+use Webflix\Domain\Model\Core\Movie\ChildrensMovie;
+use Webflix\Domain\Model\Core\Movie\Movie;
+use Webflix\Domain\Model\Core\Movie\NewReleaseMovie;
+use Webflix\Domain\Model\Core\Movie\RegularMovie;
+use Webflix\Domain\Model\Core\Rental\Rental;
+use Webflix\Domain\Model\Core\Rental\RentalStatement;
 
 /**
  * Class VideoStoreTest
