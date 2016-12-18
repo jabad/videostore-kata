@@ -5,8 +5,8 @@
   "license": "proprietary",
   "authors": [
     {
-      "name": "Eduardo Llorens",
-      "email": "ellorensc@gmail.com"
+      "name": "Webflix DT Team",
+      "email": "webflix@webflix.com"
     }
   ],
   "autoload": {
@@ -20,8 +20,7 @@
     }
   },
   "require-dev": {
-    "mockery/mockery": "0.9.*",
-    "phpunit/phpunit": "^5.2",
+    "phpunit/phpunit": "5.5.*",
     "phpmetrics/phpmetrics": "^1.10"
   },
   "require": {
