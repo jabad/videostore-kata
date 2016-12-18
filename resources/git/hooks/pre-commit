@@ -102,6 +102,7 @@ class CodeQualityTool extends Application
                     'php',
                     'vendor/friendsofphp/php-cs-fixer/php-cs-fixer',
                     '--dry-run',
+                    '--using-cache=no',
                     '--verbose',
                     'fix',
                     $file,
