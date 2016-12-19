@@ -3,6 +3,8 @@
 namespace tests\Webflix\Domain\Model\Core\Rental;
 
 use PHPUnit_Framework_TestCase;
+use Webflix\Domain\Model\BasicType\Money\Currency;
+use Webflix\Domain\Model\BasicType\Money\Money;
 use Webflix\Domain\Model\Core\Rental\RentalSummary;
 
 /**
@@ -26,7 +28,7 @@ class RentalSummaryTest extends PHPUnit_Framework_TestCase
     {
         $this->emptyRentalSummary = RentalSummary::instanceEmpty();
         $this->customRentalSummary = RentalSummary::instance(
-            self::CUSTOM_RENTAL_SUMMARY_INITIAL_TOTAL_AMOUNT,
+            Money::fromAmount(self::CUSTOM_RENTAL_SUMMARY_INITIAL_TOTAL_AMOUNT, Currency::fromCode('EUR')),
             self::CUSTOM_RENTAL_SUMMARY_INITIAL_FREQUENT_RENTER_POINTS
         );
     }
@@ -45,12 +47,12 @@ class RentalSummaryTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldAddTotalAmountAndFrequentRenterPointsWhenRentalSummaryIsEmpty()
     {
-        $newTotalAmount = 20;
+        $newTotalCost = Money::fromAmount('20', Currency::fromCode('EUR'));
         $newFrequentRenterPoints = 30;
 
-        $this->emptyRentalSummary = $this->emptyRentalSummary->add($newTotalAmount, $newFrequentRenterPoints);
+        $this->emptyRentalSummary = $this->emptyRentalSummary->add($newTotalCost, $newFrequentRenterPoints);
 
-        $this->assertEquals($newTotalAmount, $this->emptyRentalSummary->totalAmount());
+        $this->assertEquals($newTotalCost, $this->emptyRentalSummary->totalCost());
         $this->assertEquals($newFrequentRenterPoints, $this->emptyRentalSummary->frequentRenterPoints());
     }
 
@@ -59,14 +61,17 @@ class RentalSummaryTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldAddTotalAmountAndFrequentRenterPointsWhenRentalSummaryIsCustom()
     {
-        $newTotalAmount = 20;
+        $newTotalCost = Money::fromAmount('20', Currency::fromCode('EUR'));
         $newFrequentRenterPoints = 30;
 
-        $this->customRentalSummary = $this->customRentalSummary->add($newTotalAmount, $newFrequentRenterPoints);
+        $this->customRentalSummary = $this->customRentalSummary->add($newTotalCost, $newFrequentRenterPoints);
 
         $this->assertEquals(
-            self::CUSTOM_RENTAL_SUMMARY_INITIAL_TOTAL_AMOUNT + $newTotalAmount,
-            $this->customRentalSummary->totalAmount()
+            Money::fromAmount(
+                self::CUSTOM_RENTAL_SUMMARY_INITIAL_TOTAL_AMOUNT,
+                Currency::fromCode('EUR')
+            )->add($newTotalCost),
+            $this->customRentalSummary->totalCost()
         );
 
         $this->assertEquals(

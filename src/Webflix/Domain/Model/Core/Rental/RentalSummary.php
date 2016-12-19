@@ -2,39 +2,45 @@
 
 namespace Webflix\Domain\Model\Core\Rental;
 
+use Webflix\Domain\Model\BasicType\Money\Currency;
+use Webflix\Domain\Model\BasicType\Money\Money;
+
 /**
  * Class RentalSummary
  */
 final class RentalSummary
 {
-    /** @var  float */
-    private $totalAmount;
+    /** @var Money */
+    private $totalCost;
 
     /** @var  int */
     private $frequentRenterPoints;
 
-    private function __construct(float $totalAmount, int $frequentRenterPoints)
+    private function __construct(Money $totalCost, int $frequentRenterPoints)
     {
-        $this->totalAmount = $totalAmount;
+        $this->totalCost = $totalCost;
         $this->frequentRenterPoints = $frequentRenterPoints;
     }
 
-    public static function instance(float $totalAmount, int $frequentRenterPoints)
+    public static function instance(Money $totalCost, int $frequentRenterPoints)
     {
-        return new self($totalAmount, $frequentRenterPoints);
+        return new self($totalCost, $frequentRenterPoints);
     }
 
-    public static function instanceEmpty()
+    public static function instanceEmpty(Currency $currency = null)
     {
-        return new self(0, 0);
+        if ($currency == null) {
+            $currency = Currency::fromCode('EUR');
+        }
+        return new self(Money::fromAmount('0', $currency), 0);
     }
 
     /**
-     * @return float
+     * @return Money
      */
-    public function totalAmount(): float
+    public function totalCost(): Money
     {
-        return $this->totalAmount;
+        return $this->totalCost;
     }
 
     /**
@@ -46,15 +52,15 @@ final class RentalSummary
     }
 
     /**
-     * @param float $totalAmount
+     * @param Money $totalCost
      * @param int $frequentRenterPoints
      *
      * @return RentalSummary
      */
-    public function add(float $totalAmount, int $frequentRenterPoints): RentalSummary
+    public function add(Money $totalCost, int $frequentRenterPoints): RentalSummary
     {
         return RentalSummary::instance(
-            $this->totalAmount() + $totalAmount,
+            $this->totalCost()->add($totalCost),
             $this->frequentRenterPoints() + $frequentRenterPoints
         );
     }
