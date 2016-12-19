@@ -1,6 +1,6 @@
 <?php
 
-namespace video;
+namespace Webflix\Domain\Model\Core\Movie;
 
 /**
  * Class Movie

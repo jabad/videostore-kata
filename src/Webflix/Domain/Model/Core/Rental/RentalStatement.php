@@ -1,6 +1,6 @@
 <?php
 
-namespace video;
+namespace Webflix\Domain\Model\Core\Rental;
 
 /**
  * Class RentalStatement
@@ -67,7 +67,7 @@ class RentalStatement
     {
         $rentalLines = "";
 
-        foreach($this->rentals as $rental) {
+        foreach ($this->rentals as $rental) {
             $rentalLines .= $this->makeRentalLine($rental);
         }
 
@@ -104,7 +104,12 @@ class RentalStatement
      */
     private function makeSummary() : string
     {
-        return "You owed " . $this->totalAmount . "\n" . "You earned " . $this->frequentRenterPoints . " frequent renter points\n";
+        return "You owed " .
+            $this->totalAmount .
+            "\n" .
+            "You earned " .
+            $this->frequentRenterPoints .
+            " frequent renter points\n";
     }
 
     /**

@@ -1,20 +1,19 @@
 <?php
 
-namespace tests;
+namespace tests\Webflix\Domain\Model\Core\Rental;
 
 use PHPUnit_Framework_TestCase;
-use video\ChildrensMovie;
-use video\Movie;
-use video\NewReleaseMovie;
-use video\RegularMovie;
-use video\Rental;
-use video\RentalStatement;
-
+use Webflix\Domain\Model\Core\Movie\ChildrensMovie;
+use Webflix\Domain\Model\Core\Movie\Movie;
+use Webflix\Domain\Model\Core\Movie\NewReleaseMovie;
+use Webflix\Domain\Model\Core\Movie\RegularMovie;
+use Webflix\Domain\Model\Core\Rental\Rental;
+use Webflix\Domain\Model\Core\Rental\RentalStatement;
 
 /**
- * Class VideoStoreTest
+ * Class RentalStatementTest
  */
-class VideoStoreTest extends PHPUnit_Framework_TestCase
+class RentalStatementTest extends PHPUnit_Framework_TestCase
 {
     /** @var  RentalStatement */
     private $statement;
@@ -59,13 +58,10 @@ class VideoStoreTest extends PHPUnit_Framework_TestCase
         $this->regular3 = null;
     }
 
-    private function assertAmountAndPointsForReport($expectedAmount, $expectedPoints)
-    {
-        $this->assertEquals($expectedAmount, $this->statement->amountOwed());
-        $this->assertEquals($expectedPoints, $this->statement->frequentRenterPoints());
-    }
-
-    public function testSingleNewReleaseStatement()
+    /**
+     * @test
+     */
+    public function itShouldSetRightAmountAndPointsWhenMakingRentalStatementForSingleNewReleaseStatement()
     {
         $this->statement->addRental(new Rental($this->newRelease1, 3));
         $this->statement->makeRentalStatement();
@@ -73,7 +69,10 @@ class VideoStoreTest extends PHPUnit_Framework_TestCase
         $this->assertAmountAndPointsForReport(9.0, 2);
     }
 
-    public function testDualNewReleaseStatement()
+    /**
+     * @test
+     */
+    public function itShouldSetRightAmountAndPointsWhenMakingRentalStatementForDualNewReleaseStatement()
     {
         $this->statement->addRental(new Rental($this->newRelease1, 3));
         $this->statement->addRental(new Rental($this->newRelease2, 3));
@@ -82,7 +81,10 @@ class VideoStoreTest extends PHPUnit_Framework_TestCase
         $this->assertAmountAndPointsForReport(18.0, 4);
     }
 
-    public function testSingleChildrensStatement()
+    /**
+     * @test
+     */
+    public function itShouldSetRightAmountAndPointsWhenMakingRentalStatementForSingleChildrenStatement()
     {
         $this->statement->addRental(new Rental($this->childrens, 3));
         $this->statement->makeRentalStatement();
@@ -90,7 +92,10 @@ class VideoStoreTest extends PHPUnit_Framework_TestCase
         $this->assertAmountAndPointsForReport(1.5, 1);
     }
 
-    public function testMultipleRegularStatement()
+    /**
+     * @test
+     */
+    public function itShouldSetRightAmountAndPointsWhenMakingRentalStatementForMultipleRegularStatement()
     {
         $this->statement->addRental(new Rental($this->regular1, 1));
         $this->statement->addRental(new Rental($this->regular2, 2));
@@ -100,7 +105,10 @@ class VideoStoreTest extends PHPUnit_Framework_TestCase
         $this->assertAmountAndPointsForReport(7.5, 3);
     }
 
-    public function testRentalStatementFormat()
+    /**
+     * @test
+     */
+    public function itShouldPrintWithRentalStatementFormat()
     {
         $this->statement->addRental(new Rental($this->regular1, 1));
         $this->statement->addRental(new Rental($this->regular2, 2));
@@ -115,5 +123,11 @@ class VideoStoreTest extends PHPUnit_Framework_TestCase
             "You earned 3 frequent renter points\n",
             $this->statement->makeRentalStatement()
         );
+    }
+
+    private function assertAmountAndPointsForReport($expectedAmount, $expectedPoints)
+    {
+        $this->assertEquals($expectedAmount, $this->statement->amountOwed());
+        $this->assertEquals($expectedPoints, $this->statement->frequentRenterPoints());
     }
 }
