@@ -4,14 +4,15 @@ namespace Webflix\Domain\Model\Core\Rental;
 
 use Webflix\Domain\Model\BasicType\Money\Currency;
 use Webflix\Domain\Model\BasicType\Money\Money;
+use Webflix\Domain\Model\Core\Customer\Customer;
 
 /**
  * Class RentalStatement
  */
 class RentalStatement
 {
-    /** @var  string */
-    private $name;
+    /** @var Customer */
+    private $customer;
 
     /** @var RentalSummary */
     private $rentalSummary;
@@ -19,13 +20,9 @@ class RentalStatement
     /** @var  array */
     private $rentals;
 
-    /**
-     * RentalStatement constructor.
-     * @param $customerName
-     */
-    public function __construct($customerName)
+    public function __construct(Customer $customer)
     {
-        $this->name = $customerName;
+        $this->customer = $customer;
         $this->rentalSummary = RentalSummary::instanceEmpty();
     }
 
@@ -107,13 +104,9 @@ class RentalStatement
             " frequent renter points\n";
     }
 
-    /**
-     * Name accessor.
-     * @return string
-     */
     public function name(): string
     {
-        return $this->name;
+        return $this->customer->name();
     }
 
     /**

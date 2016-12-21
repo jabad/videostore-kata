@@ -3,6 +3,7 @@
 namespace tests\Webflix\Domain\Model\Core\Rental;
 
 use PHPUnit_Framework_TestCase;
+use Webflix\Domain\Model\Core\Customer\Customer;
 use Webflix\Domain\Model\Core\Movie\Movie;
 use Webflix\Domain\Model\Core\Rental\Rental;
 use Webflix\Domain\Model\Core\Rental\RentalStatement;
@@ -14,16 +15,22 @@ class RentalStatementTest extends PHPUnit_Framework_TestCase
 {
     /** @var  RentalStatement */
     private $statement;
+
     /** @var  Movie */
     private $newRelease1;
+
     /** @var  Movie */
     private $newRelease2;
+
     /** @var  Movie */
     private $children;
+
     /** @var  Movie */
     private $regular1;
+
     /** @var  Movie */
     private $regular2;
+
     /** @var  Movie */
     private $regular3;
 
@@ -32,7 +39,7 @@ class RentalStatementTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->statement = new RentalStatement('Customer Name');
+        $this->statement = new RentalStatement(Customer::instance('Customer Name'));
         $this->newRelease1 = Movie::instanceNewReleaseMovie('New Release 1');
         $this->newRelease2 = Movie::instanceNewReleaseMovie('New Release 2');
         $this->children = Movie::instanceChildrenMovie('Childrens');
