@@ -2,6 +2,9 @@
 
 namespace Webflix\Domain\Model\Core\Rental;
 
+use Webflix\Domain\Model\BasicType\Money\Currency;
+use Webflix\Domain\Model\BasicType\Money\Money;
+
 /**
  * Class RentalStatement
  */
@@ -9,10 +12,10 @@ class RentalStatement
 {
     /** @var  string */
     private $name;
-    /** @var  float */
-    private $totalAmount;
-    /** @var  int */
-    private $frequentRenterPoints;
+
+    /** @var RentalSummary */
+    private $rentalSummary;
+
     /** @var  array */
     private $rentals;
 
@@ -23,6 +26,7 @@ class RentalStatement
     public function __construct($customerName)
     {
         $this->name = $customerName;
+        $this->rentalSummary = RentalSummary::instanceEmpty();
     }
 
     /**
@@ -38,18 +42,7 @@ class RentalStatement
      */
     public function makeRentalStatement()
     {
-        $this->clearTotals();
-
         return $this->makeHeader() . $this->makeRentalLines() . $this->makeSummary();
-    }
-
-    /**
-     * Reset amount and points.
-     */
-    private function clearTotals()
-    {
-        $this->totalAmount = 0;
-        $this->frequentRenterPoints = 0;
     }
 
     /**
@@ -83,8 +76,10 @@ class RentalStatement
         /** @var float $thisAmount */
         $thisAmount = $rental->determineAmount();
 
-        $this->frequentRenterPoints += $rental->determineFrequentRenterPoints();
-        $this->totalAmount += $thisAmount;
+        $this->rentalSummary = $this->rentalSummary->add(
+            Money::fromAmount($thisAmount, Currency::fromCode('EUR')),
+            $rental->determineFrequentRenterPoints()
+        );
 
         return $this->formatRentalLine($rental, $thisAmount);
     }
@@ -105,10 +100,10 @@ class RentalStatement
     private function makeSummary() : string
     {
         return "You owed " .
-            $this->totalAmount .
+            number_format($this->rentalSummary->totalCost()->amount(), 1) .
             "\n" .
             "You earned " .
-            $this->frequentRenterPoints .
+            $this->rentalSummary->frequentRenterPoints() .
             " frequent renter points\n";
     }
 
@@ -116,7 +111,7 @@ class RentalStatement
      * Name accessor.
      * @return string
      */
-    public function name() : string
+    public function name(): string
     {
         return $this->name;
     }
@@ -125,17 +120,17 @@ class RentalStatement
      * Amount owed accessor.
      * @return float
      */
-    public function amountOwed() : float
+    public function amountOwed(): float
     {
-        return $this->totalAmount;
+        return (float) $this->rentalSummary->totalCost()->amount();
     }
 
     /**
      * Frequent renter points accessor.
      * @return int
      */
-    public function frequentRenterPoints() : int
+    public function frequentRenterPoints(): int
     {
-        return $this->frequentRenterPoints;
+        return $this->rentalSummary->frequentRenterPoints();
     }
 }

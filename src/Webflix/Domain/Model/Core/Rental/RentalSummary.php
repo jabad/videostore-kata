@@ -1,0 +1,67 @@
+<?php
+
+namespace Webflix\Domain\Model\Core\Rental;
+
+use Webflix\Domain\Model\BasicType\Money\Currency;
+use Webflix\Domain\Model\BasicType\Money\Money;
+
+/**
+ * Class RentalSummary
+ */
+final class RentalSummary
+{
+    /** @var Money */
+    private $totalCost;
+
+    /** @var  int */
+    private $frequentRenterPoints;
+
+    private function __construct(Money $totalCost, int $frequentRenterPoints)
+    {
+        $this->totalCost = $totalCost;
+        $this->frequentRenterPoints = $frequentRenterPoints;
+    }
+
+    public static function instance(Money $totalCost, int $frequentRenterPoints)
+    {
+        return new self($totalCost, $frequentRenterPoints);
+    }
+
+    public static function instanceEmpty(Currency $currency = null)
+    {
+        if ($currency == null) {
+            $currency = Currency::fromCode('EUR');
+        }
+        return new self(Money::fromAmount('0', $currency), 0);
+    }
+
+    /**
+     * @return Money
+     */
+    public function totalCost(): Money
+    {
+        return $this->totalCost;
+    }
+
+    /**
+     * @return int
+     */
+    public function frequentRenterPoints(): int
+    {
+        return $this->frequentRenterPoints;
+    }
+
+    /**
+     * @param Money $totalCost
+     * @param int $frequentRenterPoints
+     *
+     * @return RentalSummary
+     */
+    public function add(Money $totalCost, int $frequentRenterPoints): RentalSummary
+    {
+        return RentalSummary::instance(
+            $this->totalCost()->add($totalCost),
+            $this->frequentRenterPoints() + $frequentRenterPoints
+        );
+    }
+}
