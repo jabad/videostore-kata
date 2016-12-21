@@ -44,39 +44,11 @@ class Rental
 
     public function determineAmount(): float
     {
-        $thisAmount = 0;
-        $daysRented = $this->daysRented();
-
-        switch ($this->movie()->moviePriceCode()->code()) {
-            case MoviePriceCode::REGULAR:
-                $thisAmount += 2;
-                if ($daysRented > 2) {
-                    $thisAmount += ($daysRented - 2) * 1.5;
-                }
-                break;
-
-            case MoviePriceCode::NEW_RELEASE:
-                $thisAmount += ($daysRented) * 3;
-                break;
-
-            case MoviePriceCode::CHILDREN:
-                $thisAmount += 1.5;
-                if ($daysRented > 3) {
-                    $thisAmount += ($daysRented - 3) * 1.5;
-                }
-                break;
-        }
-
-        return $thisAmount;
+        return $this->movie()->determineAmount($this->daysRented());
     }
 
     public function determineFrequentRenterPoints(): int
     {
-        $frequentRenterPoints = 1;
-        if ($this->movie()->moviePriceCode()->code() === MoviePriceCode::NEW_RELEASE && $this->daysRented() > 1) {
-            $frequentRenterPoints++;
-        }
-
-        return $frequentRenterPoints;
+        return $this->movie()->determineFrequentRenterPoints($this->daysRented());
     }
 }
