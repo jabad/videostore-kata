@@ -10,16 +10,21 @@ use Webflix\Domain\Model\Core\Movie\MoviePriceCode;
  */
 class Rental
 {
-    /** @var  Movie */
+    /** @var Movie */
     private $movie;
 
-    /** @var  int */
+    /** @var int */
     private $daysRented;
 
-    public function __construct(Movie $movie, int $daysRented)
+    private function __construct(Movie $movie, int $daysRented)
     {
         $this->movie = $movie;
         $this->daysRented = $daysRented;
+    }
+
+    public static function instance(Movie $movie, int $daysRented): self
+    {
+        return new static($movie, $daysRented);
     }
 
     public function movie(): Movie

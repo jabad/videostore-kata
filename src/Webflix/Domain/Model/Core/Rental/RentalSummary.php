@@ -22,9 +22,9 @@ final class RentalSummary
         $this->frequentRenterPoints = $frequentRenterPoints;
     }
 
-    public static function instance(Money $totalCost, int $frequentRenterPoints)
+    public static function instance(Money $totalCost, int $frequentRenterPoints): self
     {
-        return new self($totalCost, $frequentRenterPoints);
+        return new static($totalCost, $frequentRenterPoints);
     }
 
     public static function instanceEmpty(Currency $currency = null)

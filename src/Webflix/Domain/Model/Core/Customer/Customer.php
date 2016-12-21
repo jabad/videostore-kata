@@ -15,7 +15,7 @@ class Customer
         $this->name = $name;
     }
 
-    public static function instance(string $name)
+    public static function instance(string $name): self
     {
         return new static($name);
     }

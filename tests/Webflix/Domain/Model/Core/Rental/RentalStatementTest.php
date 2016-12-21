@@ -39,7 +39,7 @@ class RentalStatementTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->statement = new RentalStatement(Customer::instance('Customer Name'));
+        $this->statement = RentalStatement::instance(Customer::instance('Customer Name'));
         $this->newRelease1 = Movie::instanceNewReleaseMovie('New Release 1');
         $this->newRelease2 = Movie::instanceNewReleaseMovie('New Release 2');
         $this->children = Movie::instanceChildrenMovie('Childrens');
@@ -67,7 +67,7 @@ class RentalStatementTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldSetRightAmountAndPointsWhenMakingRentalStatementForSingleNewReleaseStatement()
     {
-        $this->statement->addRental(new Rental($this->newRelease1, 3));
+        $this->statement->addRental(Rental::instance($this->newRelease1, 3));
         $this->statement->makeRentalStatement();
 
         $this->assertAmountAndPointsForReport(9.0, 2);
@@ -78,8 +78,8 @@ class RentalStatementTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldSetRightAmountAndPointsWhenMakingRentalStatementForDualNewReleaseStatement()
     {
-        $this->statement->addRental(new Rental($this->newRelease1, 3));
-        $this->statement->addRental(new Rental($this->newRelease2, 3));
+        $this->statement->addRental(Rental::instance($this->newRelease1, 3));
+        $this->statement->addRental(Rental::instance($this->newRelease2, 3));
         $this->statement->makeRentalStatement();
 
         $this->assertAmountAndPointsForReport(18.0, 4);
@@ -90,7 +90,7 @@ class RentalStatementTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldSetRightAmountAndPointsWhenMakingRentalStatementForSingleChildrenStatement()
     {
-        $this->statement->addRental(new Rental($this->children, 3));
+        $this->statement->addRental(Rental::instance($this->children, 3));
         $this->statement->makeRentalStatement();
 
         $this->assertAmountAndPointsForReport(1.5, 1);
@@ -101,9 +101,9 @@ class RentalStatementTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldSetRightAmountAndPointsWhenMakingRentalStatementForMultipleRegularStatement()
     {
-        $this->statement->addRental(new Rental($this->regular1, 1));
-        $this->statement->addRental(new Rental($this->regular2, 2));
-        $this->statement->addRental(new Rental($this->regular3, 3));
+        $this->statement->addRental(Rental::instance($this->regular1, 1));
+        $this->statement->addRental(Rental::instance($this->regular2, 2));
+        $this->statement->addRental(Rental::instance($this->regular3, 3));
         $this->statement->makeRentalStatement();
 
         $this->assertAmountAndPointsForReport(7.5, 3);
@@ -114,9 +114,9 @@ class RentalStatementTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldPrintWithRentalStatementFormat()
     {
-        $this->statement->addRental(new Rental($this->regular1, 1));
-        $this->statement->addRental(new Rental($this->regular2, 2));
-        $this->statement->addRental(new Rental($this->regular3, 3));
+        $this->statement->addRental(Rental::instance($this->regular1, 1));
+        $this->statement->addRental(Rental::instance($this->regular2, 2));
+        $this->statement->addRental(Rental::instance($this->regular3, 3));
 
         $this->assertEquals(
             "Rental Record for Customer Name\n" .

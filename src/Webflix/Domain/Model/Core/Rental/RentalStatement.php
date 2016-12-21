@@ -14,22 +14,28 @@ class RentalStatement
     /** @var Customer */
     private $customer;
 
-    /** @var RentalSummary */
-    private $rentalSummary;
-
     /** @var  array */
     private $rentals;
 
-    public function __construct(Customer $customer)
+    private function __construct(Customer $customer)
     {
         $this->customer = $customer;
-        $this->rentalSummary = RentalSummary::instanceEmpty();
+    }
+
+    public static function instance(Customer $customer): self
+    {
+        return new static($customer);
     }
 
     /**
-     * @param Rental $rental
+     * @return Rental[]
      */
-    public function addRental($rental)
+    public function rentals()
+    {
+        return $this->rentals;
+    }
+
+    public function addRental(Rental $rental)
     {
         $this->rentals[] = $rental;
     }
@@ -39,69 +45,7 @@ class RentalStatement
      */
     public function makeRentalStatement()
     {
-        return $this->makeHeader() . $this->makeRentalLines() . $this->makeSummary();
-    }
-
-    /**
-     * @return string
-     */
-    private function makeHeader() : string
-    {
-        return "Rental Record for " . $this->name() . "\n";
-    }
-
-    /**
-     * @return string
-     */
-    private function makeRentalLines() : string
-    {
-        $rentalLines = "";
-
-        foreach ($this->rentals as $rental) {
-            $rentalLines .= $this->makeRentalLine($rental);
-        }
-
-        return $rentalLines;
-    }
-
-    /**
-     * @param Rental $rental
-     * @return string
-     */
-    private function makeRentalLine($rental) : string
-    {
-        /** @var float $thisAmount */
-        $thisAmount = $rental->determineAmount();
-
-        $this->rentalSummary = $this->rentalSummary->add(
-            Money::fromAmount($thisAmount, Currency::fromCode('EUR')),
-            $rental->determineFrequentRenterPoints()
-        );
-
-        return $this->formatRentalLine($rental, $thisAmount);
-    }
-
-    /**
-     * @param Rental $rental
-     * @param float $thisAmount
-     * @return string
-     */
-    private function formatRentalLine($rental, $thisAmount) : string
-    {
-        return "\t" . $rental->title() . "\t" . number_format($thisAmount, 1) . "\n";
-    }
-
-    /**
-     * @return string
-     */
-    private function makeSummary() : string
-    {
-        return "You owed " .
-            number_format($this->rentalSummary->totalCost()->amount(), 1) .
-            "\n" .
-            "You earned " .
-            $this->rentalSummary->frequentRenterPoints() .
-            " frequent renter points\n";
+        return StringRentalStatementFormatter::instance()->format($this);
     }
 
     public function name(): string
@@ -109,21 +53,27 @@ class RentalStatement
         return $this->customer->name();
     }
 
-    /**
-     * Amount owed accessor.
-     * @return float
-     */
-    public function amountOwed(): float
+    public function getRentalSummary(): RentalSummary
     {
-        return (float) $this->rentalSummary->totalCost()->amount();
+        $rentalSummary = RentalSummary::instanceEmpty();
+
+        foreach ($this->rentals() as $rental) {
+            $rentalSummary = $rentalSummary->add(
+                Money::fromAmount($rental->determineAmount(), Currency::fromCode('EUR')),
+                $rental->determineFrequentRenterPoints()
+            );
+        }
+
+        return $rentalSummary;
     }
 
-    /**
-     * Frequent renter points accessor.
-     * @return int
-     */
+    public function amountOwed(): float
+    {
+        return (float) $this->getRentalSummary()->totalCost()->amount();
+    }
+
     public function frequentRenterPoints(): int
     {
-        return $this->rentalSummary->frequentRenterPoints();
+        return $this->getRentalSummary()->frequentRenterPoints();
     }
 }

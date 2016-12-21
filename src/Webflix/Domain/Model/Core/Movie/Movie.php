@@ -21,17 +21,17 @@ class Movie
 
     public static function instanceRegularMovie(string $title): self
     {
-        return new self($title, MoviePriceCode::instanceRegular());
+        return new static($title, MoviePriceCode::instanceRegular());
     }
 
     public static function instanceNewReleaseMovie(string $title): self
     {
-        return new self($title, MoviePriceCode::instanceNewRelease());
+        return new static($title, MoviePriceCode::instanceNewRelease());
     }
 
     public static function instanceChildrenMovie(string $title): self
     {
-        return new self($title, MoviePriceCode::instanceChildren());
+        return new static($title, MoviePriceCode::instanceChildren());
     }
 
     public function title(): string
