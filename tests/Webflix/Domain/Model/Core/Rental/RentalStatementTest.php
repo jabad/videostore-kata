@@ -3,10 +3,7 @@
 namespace tests\Webflix\Domain\Model\Core\Rental;
 
 use PHPUnit_Framework_TestCase;
-use Webflix\Domain\Model\Core\Movie\ChildrensMovie;
 use Webflix\Domain\Model\Core\Movie\Movie;
-use Webflix\Domain\Model\Core\Movie\NewReleaseMovie;
-use Webflix\Domain\Model\Core\Movie\RegularMovie;
 use Webflix\Domain\Model\Core\Rental\Rental;
 use Webflix\Domain\Model\Core\Rental\RentalStatement;
 
@@ -22,7 +19,7 @@ class RentalStatementTest extends PHPUnit_Framework_TestCase
     /** @var  Movie */
     private $newRelease2;
     /** @var  Movie */
-    private $childrens;
+    private $children;
     /** @var  Movie */
     private $regular1;
     /** @var  Movie */
@@ -36,12 +33,12 @@ class RentalStatementTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->statement = new RentalStatement('Customer Name');
-        $this->newRelease1 = new NewReleaseMovie('New Release 1');
-        $this->newRelease2 = new NewReleaseMovie('New Release 2');
-        $this->childrens = new ChildrensMovie('Childrens');
-        $this->regular1 = new RegularMovie('Regular 1');
-        $this->regular2 = new RegularMovie('Regular 2');
-        $this->regular3 = new RegularMovie('Regular 3');
+        $this->newRelease1 = Movie::instanceNewReleaseMovie('New Release 1');
+        $this->newRelease2 = Movie::instanceNewReleaseMovie('New Release 2');
+        $this->children = Movie::instanceChildrenMovie('Childrens');
+        $this->regular1 = Movie::instanceRegularMovie('Regular 1');
+        $this->regular2 = Movie::instanceRegularMovie('Regular 2');
+        $this->regular3 = Movie::instanceRegularMovie('Regular 3');
     }
 
     /**
@@ -52,7 +49,7 @@ class RentalStatementTest extends PHPUnit_Framework_TestCase
         $this->statement = null;
         $this->newRelease1 = null;
         $this->newRelease2 = null;
-        $this->childrens = null;
+        $this->children = null;
         $this->regular1 = null;
         $this->regular2 = null;
         $this->regular3 = null;
@@ -86,7 +83,7 @@ class RentalStatementTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldSetRightAmountAndPointsWhenMakingRentalStatementForSingleChildrenStatement()
     {
-        $this->statement->addRental(new Rental($this->childrens, 3));
+        $this->statement->addRental(new Rental($this->children, 3));
         $this->statement->makeRentalStatement();
 
         $this->assertAmountAndPointsForReport(1.5, 1);

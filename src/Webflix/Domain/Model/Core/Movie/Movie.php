@@ -5,30 +5,42 @@ namespace Webflix\Domain\Model\Core\Movie;
 /**
  * Class Movie
  */
-abstract class Movie
+class Movie
 {
-    /** @var  string */
+    /** @var string */
     private $title;
 
-    /**
-     * Movie constructor.
-     * @param $title
-     */
-    public function __construct($title)
+    /** @var MoviePriceCode */
+    private $moviePriceCode;
+
+    private function __construct(string $title, MoviePriceCode $moviePriceCode)
     {
         $this->title = $title;
+        $this->moviePriceCode = $moviePriceCode;
     }
 
-    /**
-     * Title accessor.
-     * @return string
-     */
-    public function title() : string
+    public static function instanceRegularMovie(string $title): self
+    {
+        return new self($title, MoviePriceCode::instanceRegular());
+    }
+
+    public static function instanceNewReleaseMovie(string $title): self
+    {
+        return new self($title, MoviePriceCode::instanceNewRelease());
+    }
+
+    public static function instanceChildrenMovie(string $title): self
+    {
+        return new self($title, MoviePriceCode::instanceChildren());
+    }
+
+    public function title(): string
     {
         return $this->title;
     }
 
-    abstract public function determineAmount($daysRented) : float;
-
-    abstract public function determineFrequentRenterPoints($daysRented) : int;
+    public function moviePriceCode(): MoviePriceCode
+    {
+        return $this->moviePriceCode;
+    }
 }
