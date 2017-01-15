@@ -3,7 +3,6 @@
 namespace Webflix\Domain\Model\Core\Rental;
 
 use Webflix\Domain\Model\Core\Movie\Movie;
-use Webflix\Domain\Model\Core\Movie\MoviePriceCode;
 
 /**
  * Class Rental

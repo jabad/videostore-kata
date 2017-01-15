@@ -2,7 +2,6 @@
 
 namespace Webflix\Domain\Model\Core\Rental;
 
-use Webflix\Domain\Model\BasicType\Money\Currency;
 use Webflix\Domain\Model\BasicType\Money\Money;
 
 /**
@@ -27,12 +26,9 @@ final class RentalSummary
         return new static($totalCost, $frequentRenterPoints);
     }
 
-    public static function instanceEmpty(Currency $currency = null)
+    public static function instanceEmpty()
     {
-        if ($currency == null) {
-            $currency = Currency::fromCode('EUR');
-        }
-        return new self(Money::fromAmount('0', $currency), 0);
+        return new self(Money::fromAmount('0'), 0);
     }
 
     /**

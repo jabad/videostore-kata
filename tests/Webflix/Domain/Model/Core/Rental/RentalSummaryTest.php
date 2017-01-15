@@ -28,7 +28,7 @@ class RentalSummaryTest extends PHPUnit_Framework_TestCase
     {
         $this->emptyRentalSummary = RentalSummary::instanceEmpty();
         $this->customRentalSummary = RentalSummary::instance(
-            Money::fromAmount(self::CUSTOM_RENTAL_SUMMARY_INITIAL_TOTAL_AMOUNT, Currency::fromCode('EUR')),
+            Money::fromAmount(self::CUSTOM_RENTAL_SUMMARY_INITIAL_TOTAL_AMOUNT),
             self::CUSTOM_RENTAL_SUMMARY_INITIAL_FREQUENT_RENTER_POINTS
         );
     }
@@ -47,7 +47,7 @@ class RentalSummaryTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldAddTotalAmountAndFrequentRenterPointsWhenRentalSummaryIsEmpty()
     {
-        $newTotalCost = Money::fromAmount('20', Currency::fromCode('EUR'));
+        $newTotalCost = Money::fromAmount('20');
         $newFrequentRenterPoints = 30;
 
         $this->emptyRentalSummary = $this->emptyRentalSummary->add($newTotalCost, $newFrequentRenterPoints);
@@ -61,15 +61,14 @@ class RentalSummaryTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldAddTotalAmountAndFrequentRenterPointsWhenRentalSummaryIsCustom()
     {
-        $newTotalCost = Money::fromAmount('20', Currency::fromCode('EUR'));
+        $newTotalCost = Money::fromAmount('20');
         $newFrequentRenterPoints = 30;
 
         $this->customRentalSummary = $this->customRentalSummary->add($newTotalCost, $newFrequentRenterPoints);
 
         $this->assertEquals(
             Money::fromAmount(
-                self::CUSTOM_RENTAL_SUMMARY_INITIAL_TOTAL_AMOUNT,
-                Currency::fromCode('EUR')
+                self::CUSTOM_RENTAL_SUMMARY_INITIAL_TOTAL_AMOUNT
             )->add($newTotalCost),
             $this->customRentalSummary->totalCost()
         );

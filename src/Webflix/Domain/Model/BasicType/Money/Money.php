@@ -62,9 +62,13 @@ final class Money
      *
      * @return Money
      */
-    public static function fromAmount($amount, Currency $currency)
+    public static function fromAmount($amount, Currency $currency = null)
     {
         self::assertNumeric($amount);
+
+        if ($currency == null) {
+            $currency = Currency::fromCode('EUR');
+        }
 
         return new self((string) $amount, $currency);
     }

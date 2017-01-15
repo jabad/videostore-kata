@@ -2,7 +2,6 @@
 
 namespace Webflix\Domain\Model\Core\Rental;
 
-use Webflix\Domain\Model\BasicType\Money\Currency;
 use Webflix\Domain\Model\BasicType\Money\Money;
 use Webflix\Domain\Model\Core\Customer\Customer;
 
@@ -59,7 +58,7 @@ class RentalStatement
 
         foreach ($this->rentals() as $rental) {
             $rentalSummary = $rentalSummary->add(
-                Money::fromAmount($rental->determineAmount(), Currency::fromCode('EUR')),
+                Money::fromAmount($rental->determineAmount()),
                 $rental->determineFrequentRenterPoints()
             );
         }
