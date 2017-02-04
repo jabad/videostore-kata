@@ -2,8 +2,6 @@
 
 namespace Webflix\Domain\Model\Core\Movie;
 
-use Webflix\Domain\Model\Validation\DomainAssertion;
-
 /**
  * Class MoviePriceCode
  */
@@ -29,16 +27,9 @@ class MoviePriceCode
 
     private function setCode(int $code): self
     {
-        DomainAssertion::choice($code, self::CODES_ALLOWED);
-
         $this->code = $code;
 
         return $this;
-    }
-
-    public static function instance(int $code): self
-    {
-        return new static($code);
     }
 
     public static function instanceRegular(): self
@@ -64,10 +55,5 @@ class MoviePriceCode
     public function isNewRelease(): bool
     {
         return $this->code() === self::NEW_RELEASE;
-    }
-
-    public function __toString()
-    {
-        return (string) $this->code();
     }
 }
