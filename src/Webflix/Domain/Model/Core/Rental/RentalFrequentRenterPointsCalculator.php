@@ -7,6 +7,15 @@ namespace Webflix\Domain\Model\Core\Rental;
  */
 class RentalFrequentRenterPointsCalculator
 {
+    private function __construct()
+    {
+    }
+
+    public static function instance(): self
+    {
+        return new static();
+    }
+
     public function determineFrequentRenterPoints(Rental $rental): int
     {
         $frequentRenterPoints = 1;

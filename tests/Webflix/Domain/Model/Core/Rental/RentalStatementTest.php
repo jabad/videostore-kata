@@ -47,8 +47,8 @@ class RentalStatementTest extends TestCase
     {
         $this->statement = RentalStatement::instance(Customer::instance('Customer Name'));
         $this->rentalSummaryBuilder = RentalSummaryBuilder::instance(
-            new RentalAmountCalculator(),
-            new RentalFrequentRenterPointsCalculator()
+            RentalAmountCalculator::instance(),
+            RentalFrequentRenterPointsCalculator::instance()
         );
         $this->newRelease1 = Movie::instanceNewReleaseMovie('New Release 1');
         $this->newRelease2 = Movie::instanceNewReleaseMovie('New Release 2');
