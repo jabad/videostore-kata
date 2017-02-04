@@ -1,7 +1,8 @@
 <?php
 
-namespace tests\Webflix\Domain\Model\Core\Rental;
+namespace Tests\Webflix\Domain\Model\Core\Rental;
 
+use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_TestCase;
 use Webflix\Domain\Model\Core\Customer\Customer;
 use Webflix\Domain\Model\Core\Movie\Movie;
@@ -11,7 +12,7 @@ use Webflix\Domain\Model\Core\Rental\RentalStatement;
 /**
  * Class RentalStatementTest
  */
-class RentalStatementTest extends PHPUnit_Framework_TestCase
+class RentalStatementTest extends TestCase
 {
     /** @var  RentalStatement */
     private $statement;

@@ -1,17 +1,18 @@
 <?php
 
-namespace tests\Webflix\Domain\Model\BasicType\Money;
+namespace Tests\Webflix\Domain\Model\BasicType\Money;
 
+use PHPUnit\Framework\TestCase;
 use Webflix\Domain\Model\BasicType\Money\Currency;
 use Webflix\Domain\Model\BasicType\Money\InvalidArgumentException;
 use Webflix\Domain\Model\BasicType\Money\Money;
 
 /**
- * @coversDefaultClass Money
- * @uses Currency
- * @uses Money
+ * @coversDefaultClass Webflix\Domain\Model\BasicType\Money\Money
+ * @uses Webflix\Domain\Model\BasicType\Money\Currency
+ * @uses Webflix\Domain\Model\BasicType\Money\Money
  */
-final class MoneyTest extends \PHPUnit_Framework_TestCase
+final class MoneyTest extends TestCase
 {
     /**
      * @covers ::__callStatic

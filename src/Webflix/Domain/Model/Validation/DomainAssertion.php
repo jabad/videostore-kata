@@ -9,8 +9,13 @@ use Assert\Assertion;
  */
 class DomainAssertion extends Assertion
 {
-    protected static function createException($value, $message, $code, $propertyPath, array $constraints = array())
-    {
+    protected static function createException(
+        $value,
+        $message,
+        $code,
+        $propertyPath = null,
+        array $constraints = array()
+    ) {
         return new \InvalidArgumentException($message, $code);
     }
 }

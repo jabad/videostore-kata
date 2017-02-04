@@ -1,16 +1,15 @@
 <?php
 
-namespace tests\Webflix\Domain\Model\Core\Rental;
+namespace Tests\Webflix\Domain\Model\Core\Rental;
 
-use PHPUnit_Framework_TestCase;
-use Webflix\Domain\Model\BasicType\Money\Currency;
+use PHPUnit\Framework\TestCase;
 use Webflix\Domain\Model\BasicType\Money\Money;
 use Webflix\Domain\Model\Core\Rental\RentalSummary;
 
 /**
  * Class RentalSummaryTest
  */
-class RentalSummaryTest extends PHPUnit_Framework_TestCase
+class RentalSummaryTest extends TestCase
 {
     const CUSTOM_RENTAL_SUMMARY_INITIAL_TOTAL_AMOUNT = 5;
     const CUSTOM_RENTAL_SUMMARY_INITIAL_FREQUENT_RENTER_POINTS = 10;
