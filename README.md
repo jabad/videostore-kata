@@ -1,6 +1,7 @@
 # Videostore Kata README #
 
 [![Build Status](https://api.travis-ci.org/jabad/videostore-kata.png?branch=master)](https://travis-ci.org/jabad/videostore-kata)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/jabad/videostore-kata/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/jabad/videostore-kata/?branch=master)
 [![Coverage Status](https://coveralls.io/repos/github/jabad/videostore-kata/badge.svg)](https://coveralls.io/github/jabad/videostore-kata)
 [![Dependency Status](https://www.versioneye.com/user/projects/585659c4ad9aa20040cc37ff/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/585659c4ad9aa20040cc37ff)
 
