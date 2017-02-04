@@ -36,18 +36,8 @@ class Rental
         return $this->daysRented;
     }
 
-    public function title() : string
+    public function title(): string
     {
         return $this->movie->title();
-    }
-
-    public function determineAmount(): float
-    {
-        return $this->movie()->determineAmount($this->daysRented());
-    }
-
-    public function determineFrequentRenterPoints(): int
-    {
-        return $this->movie()->determineFrequentRenterPoints($this->daysRented());
     }
 }

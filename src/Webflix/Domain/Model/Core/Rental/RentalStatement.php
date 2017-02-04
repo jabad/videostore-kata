@@ -13,8 +13,8 @@ class RentalStatement
     /** @var Customer */
     private $customer;
 
-    /** @var  array */
-    private $rentals;
+    /** @var RentalSummary[] */
+    private $rentalSummaries;
 
     private function __construct(Customer $customer)
     {
@@ -27,16 +27,16 @@ class RentalStatement
     }
 
     /**
-     * @return Rental[]
+     * @return RentalSummary[]
      */
-    public function rentals()
+    public function rentalSummaries()
     {
-        return $this->rentals;
+        return $this->rentalSummaries;
     }
 
-    public function addRental(Rental $rental)
+    public function addRentalSummary(RentalSummary $rentalSummary)
     {
-        $this->rentals[] = $rental;
+        $this->rentalSummaries[] = $rentalSummary;
     }
 
     /**
@@ -52,27 +52,25 @@ class RentalStatement
         return $this->customer->name();
     }
 
-    public function getRentalSummary(): RentalSummary
-    {
-        $rentalSummary = RentalSummary::instanceEmpty();
-
-        foreach ($this->rentals() as $rental) {
-            $rentalSummary = $rentalSummary->add(
-                Money::fromAmount($rental->determineAmount()),
-                $rental->determineFrequentRenterPoints()
-            );
-        }
-
-        return $rentalSummary;
-    }
-
     public function amountOwed(): float
     {
-        return (float) $this->getRentalSummary()->totalCost()->amount();
+        $totalCost = Money::fromAmount(0);
+
+        foreach ($this->rentalSummaries() as $rentalSummary) {
+            $totalCost = $totalCost->add($rentalSummary->cost());
+        }
+
+        return (float) $totalCost->amount();
     }
 
     public function frequentRenterPoints(): int
     {
-        return $this->getRentalSummary()->frequentRenterPoints();
+        $totalFrequentRenterPoints = 0;
+
+        foreach ($this->rentalSummaries() as $rentalSummary) {
+            $totalFrequentRenterPoints += $rentalSummary->frequentRenterPoints();
+        }
+
+        return $totalFrequentRenterPoints;
     }
 }

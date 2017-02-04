@@ -3,19 +3,24 @@
 namespace Tests\Webflix\Domain\Model\Core\Rental;
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_TestCase;
 use Webflix\Domain\Model\Core\Customer\Customer;
 use Webflix\Domain\Model\Core\Movie\Movie;
 use Webflix\Domain\Model\Core\Rental\Rental;
+use Webflix\Domain\Model\Core\Rental\RentalAmountCalculator;
+use Webflix\Domain\Model\Core\Rental\RentalFrequentRenterPointsCalculator;
 use Webflix\Domain\Model\Core\Rental\RentalStatement;
+use Webflix\Domain\Model\Core\Rental\RentalSummaryBuilder;
 
 /**
  * Class RentalStatementTest
  */
 class RentalStatementTest extends TestCase
 {
-    /** @var  RentalStatement */
+    /** @var RentalStatement */
     private $statement;
+
+    /** @var  RentalSummaryBuilder */
+    private $rentalSummaryBuilder;
 
     /** @var  Movie */
     private $newRelease1;
@@ -41,6 +46,10 @@ class RentalStatementTest extends TestCase
     protected function setUp()
     {
         $this->statement = RentalStatement::instance(Customer::instance('Customer Name'));
+        $this->rentalSummaryBuilder = RentalSummaryBuilder::instance(
+            new RentalAmountCalculator(),
+            new RentalFrequentRenterPointsCalculator()
+        );
         $this->newRelease1 = Movie::instanceNewReleaseMovie('New Release 1');
         $this->newRelease2 = Movie::instanceNewReleaseMovie('New Release 2');
         $this->children = Movie::instanceChildrenMovie('Childrens');
@@ -55,6 +64,7 @@ class RentalStatementTest extends TestCase
     protected function tearDown()
     {
         $this->statement = null;
+        $this->rentalSummaryBuilder = null;
         $this->newRelease1 = null;
         $this->newRelease2 = null;
         $this->children = null;
@@ -68,7 +78,9 @@ class RentalStatementTest extends TestCase
      */
     public function itShouldSetRightAmountAndPointsWhenMakingRentalStatementForSingleNewReleaseStatement()
     {
-        $this->statement->addRental(Rental::instance($this->newRelease1, 3));
+        $this->statement->addRentalSummary(
+            $this->rentalSummaryBuilder->build(Rental::instance($this->newRelease1, 3))
+        );
         $this->statement->makeRentalStatement();
 
         $this->assertAmountAndPointsForReport(9.0, 2);
@@ -79,8 +91,12 @@ class RentalStatementTest extends TestCase
      */
     public function itShouldSetRightAmountAndPointsWhenMakingRentalStatementForDualNewReleaseStatement()
     {
-        $this->statement->addRental(Rental::instance($this->newRelease1, 3));
-        $this->statement->addRental(Rental::instance($this->newRelease2, 3));
+        $this->statement->addRentalSummary(
+            $this->rentalSummaryBuilder->build(Rental::instance($this->newRelease1, 3))
+        );
+        $this->statement->addRentalSummary(
+            $this->rentalSummaryBuilder->build(Rental::instance($this->newRelease2, 3))
+        );
         $this->statement->makeRentalStatement();
 
         $this->assertAmountAndPointsForReport(18.0, 4);
@@ -91,7 +107,9 @@ class RentalStatementTest extends TestCase
      */
     public function itShouldSetRightAmountAndPointsWhenMakingRentalStatementForSingleChildrenStatement()
     {
-        $this->statement->addRental(Rental::instance($this->children, 3));
+        $this->statement->addRentalSummary(
+            $this->rentalSummaryBuilder->build(Rental::instance($this->children, 3))
+        );
         $this->statement->makeRentalStatement();
 
         $this->assertAmountAndPointsForReport(1.5, 1);
@@ -102,9 +120,15 @@ class RentalStatementTest extends TestCase
      */
     public function itShouldSetRightAmountAndPointsWhenMakingRentalStatementForMultipleRegularStatement()
     {
-        $this->statement->addRental(Rental::instance($this->regular1, 1));
-        $this->statement->addRental(Rental::instance($this->regular2, 2));
-        $this->statement->addRental(Rental::instance($this->regular3, 3));
+        $this->statement->addRentalSummary(
+            $this->rentalSummaryBuilder->build(Rental::instance($this->regular1, 1))
+        );
+        $this->statement->addRentalSummary(
+            $this->rentalSummaryBuilder->build(Rental::instance($this->regular2, 2))
+        );
+        $this->statement->addRentalSummary(
+            $this->rentalSummaryBuilder->build(Rental::instance($this->regular3, 3))
+        );
         $this->statement->makeRentalStatement();
 
         $this->assertAmountAndPointsForReport(7.5, 3);
@@ -115,9 +139,15 @@ class RentalStatementTest extends TestCase
      */
     public function itShouldPrintWithRentalStatementFormat()
     {
-        $this->statement->addRental(Rental::instance($this->regular1, 1));
-        $this->statement->addRental(Rental::instance($this->regular2, 2));
-        $this->statement->addRental(Rental::instance($this->regular3, 3));
+        $this->statement->addRentalSummary(
+            $this->rentalSummaryBuilder->build(Rental::instance($this->regular1, 1))
+        );
+        $this->statement->addRentalSummary(
+            $this->rentalSummaryBuilder->build(Rental::instance($this->regular2, 2))
+        );
+        $this->statement->addRentalSummary(
+            $this->rentalSummaryBuilder->build(Rental::instance($this->regular3, 3))
+        );
 
         $this->assertEquals(
             "Rental Record for Customer Name\n" .

@@ -9,55 +9,39 @@ use Webflix\Domain\Model\BasicType\Money\Money;
  */
 final class RentalSummary
 {
+    /** @var Rental */
+    private $rental;
+
     /** @var Money */
-    private $totalCost;
+    private $cost;
 
     /** @var  int */
     private $frequentRenterPoints;
 
-    private function __construct(Money $totalCost, int $frequentRenterPoints)
+    private function __construct(Rental $rental, Money $cost, int $frequentRenterPoints)
     {
-        $this->totalCost = $totalCost;
+        $this->rental = $rental;
+        $this->cost = $cost;
         $this->frequentRenterPoints = $frequentRenterPoints;
     }
 
-    public static function instance(Money $totalCost, int $frequentRenterPoints): self
+    public static function instance(Rental $rental, Money $cost, int $frequentRenterPoints): self
     {
-        return new static($totalCost, $frequentRenterPoints);
+        return new static($rental, $cost, $frequentRenterPoints);
     }
 
-    public static function instanceEmpty()
+    public function rental(): Rental
     {
-        return new self(Money::fromAmount('0'), 0);
+        return $this->rental;
     }
 
-    /**
-     * @return Money
-     */
-    public function totalCost(): Money
+    public function cost(): Money
     {
-        return $this->totalCost;
+        return $this->cost;
     }
 
-    /**
-     * @return int
-     */
     public function frequentRenterPoints(): int
     {
         return $this->frequentRenterPoints;
-    }
-
-    /**
-     * @param Money $totalCost
-     * @param int $frequentRenterPoints
-     *
-     * @return RentalSummary
-     */
-    public function add(Money $totalCost, int $frequentRenterPoints): RentalSummary
-    {
-        return RentalSummary::instance(
-            $this->totalCost()->add($totalCost),
-            $this->frequentRenterPoints() + $frequentRenterPoints
-        );
     }
 }

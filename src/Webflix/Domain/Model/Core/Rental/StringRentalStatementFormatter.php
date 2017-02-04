@@ -32,32 +32,30 @@ class StringRentalStatementFormatter implements RentalStatementFormatter
     {
         $rentalLines = "";
 
-        foreach ($rentalStatement->rentals() as $rental) {
-            $rentalLines .= $this->makeRentalLine($rental);
+        foreach ($rentalStatement->rentalSummaries() as $rentalSummary) {
+            $rentalLines .= $this->makeRentalLine($rentalSummary);
         }
 
         return $rentalLines;
     }
 
-    private function makeRentalLine(Rental $rental): string
+    private function makeRentalLine(RentalSummary $rentalSummary): string
     {
-        return $this->formatRentalLine($rental, $rental->determineAmount());
+        return $this->formatRentalLine($rentalSummary, (float) $rentalSummary->cost()->amount());
     }
 
-    private function formatRentalLine(Rental $rental, float $thisAmount): string
+    private function formatRentalLine(RentalSummary $rentalSummary, float $thisAmount): string
     {
-        return "\t" . $rental->title() . "\t" . number_format($thisAmount, 1) . "\n";
+        return "\t" . $rentalSummary->rental()->title() . "\t" . number_format($thisAmount, 1) . "\n";
     }
 
     private function makeSummary(RentalStatement $rentalStatement): string
     {
-        $getRentalSummary = $rentalStatement->getRentalSummary();
-
         return "You owed " .
-            number_format($getRentalSummary->totalCost()->amount(), 1) .
+            number_format($rentalStatement->amountOwed(), 1) .
             "\n" .
             "You earned " .
-            $getRentalSummary->frequentRenterPoints() .
+            $rentalStatement->frequentRenterPoints() .
             " frequent renter points\n";
     }
 }
